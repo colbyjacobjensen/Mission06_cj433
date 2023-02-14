@@ -38,12 +38,18 @@ namespace Mission06_cj433.Controllers
         }
 
         [HttpPost]
-        public IActionResult MovieForm(FormResponse r)
+        public IActionResult MovieForm (FormResponse r)
         {
-            _formContext.Add(r);
-            _formContext.SaveChanges();
-
-            return View("Confirmation", r);
+            if (ModelState.IsValid)
+            {
+                _formContext.Add(r);
+                _formContext.SaveChanges();
+                return View("Confirmation", r);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
