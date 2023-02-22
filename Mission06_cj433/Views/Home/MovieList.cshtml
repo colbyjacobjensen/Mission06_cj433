@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Movies"; // "Movie List" Page
+}
+
+@model List<FormResponse>
+
+<table class="table table-bordered table-striped">
+    <!--Column Names-->
+    <thead class="font-weight-bold">
+        <tr>
+            <td>Category</td>
+            <td>Title</td>
+            <td>Year</td>
+            <td>Director</td>
+            <td>Rating</td>
+            <td>Edited</td>
+            <td>Lent To</td>
+            <td>Notes</td>
+        </tr>
+    </thead>
+
+    <!--Insert Rows - List out all Movies in Collection-->
+    <tbody>
+        @foreach (var data in Model)
+            {
+                <tr>
+                    <td>@data.Category.CategoryName</td>
+                    <td>@data.Title</td>
+                    <td>@data.Year</td>
+                    <td>@data.Director</td>
+                    <td>@data.Rating</td>
+                    <td>@data.Edited</td>
+                    <td>@data.LentTo</td>
+                    <td>@data.Notes</td>
+
+                    <td><a asp-controller="Home" asp-action="Edit" asp-route-movieid="@data.MovieID">Edit</a></td>
+                    <td><a asp-controller="Home" asp-action="Delete" asp-route-movieid="@data.MovieID">Delete</a></td>
+                </tr>
+            }
+    </tbody>
+</table>

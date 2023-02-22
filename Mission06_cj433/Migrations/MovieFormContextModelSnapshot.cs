@@ -15,15 +15,70 @@ namespace Mission06_cj433.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("Mission06_cj433.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Western"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Romance/Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Sci-Fi"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Thriller"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "Horror"
+                        },
+                        new
+                        {
+                            CategoryID = 8,
+                            CategoryName = "Animation"
+                        });
+                });
+
             modelBuilder.Entity("Mission06_cj433.Models.FormResponse", b =>
                 {
                     b.Property<int>("MovieID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -52,13 +107,15 @@ namespace Mission06_cj433.Migrations
 
                     b.HasKey("MovieID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             MovieID = 1,
-                            Category = "Action/Adventure",
+                            CategoryID = 1,
                             Director = "Matt Reaves",
                             Edited = false,
                             LentTo = "",
@@ -70,7 +127,7 @@ namespace Mission06_cj433.Migrations
                         new
                         {
                             MovieID = 2,
-                            Category = "Western",
+                            CategoryID = 2,
                             Director = "Sergio Leone",
                             Edited = false,
                             LentTo = "",
@@ -82,7 +139,7 @@ namespace Mission06_cj433.Migrations
                         new
                         {
                             MovieID = 3,
-                            Category = "Action/Adventure",
+                            CategoryID = 1,
                             Director = "Ridley Scott",
                             Edited = true,
                             LentTo = "Olivia Jensen",
@@ -91,6 +148,15 @@ namespace Mission06_cj433.Migrations
                             Title = "Gladiator",
                             Year = (short)2000
                         });
+                });
+
+            modelBuilder.Entity("Mission06_cj433.Models.FormResponse", b =>
+                {
+                    b.HasOne("Mission06_cj433.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

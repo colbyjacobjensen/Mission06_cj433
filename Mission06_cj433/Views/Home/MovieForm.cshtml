@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Movie Form"; // Form Page
+    ViewData["Title"] = "Movie Form"; // "Form" Page
 }
 
 @model Mission06_cj433.Models.FormResponse
@@ -9,8 +9,15 @@
     <br />
 
     <form method="post">
-        <label asp-for="Category">Category:</label>
-        <input asp-for="Category" /><br />
+        <!--Dropdown for Categories from Category Model-->
+        <label asp-for="CategoryID">Category:</label>
+        <select asp-for="CategoryID">
+            <option value="">Select Category</option>
+            @foreach ( Category cat in ViewBag.Categories )
+            {
+                <option value="@cat.CategoryID">@cat.CategoryName</option>
+            }
+        </select><br />
 
         <label asp-for="Title">Title:</label>
         <input asp-for="Title" /><br />
@@ -24,6 +31,7 @@
         <!-- Dropdown for Ratings -->
         <label asp-for="Rating">Rating:</label>
         <select asp-for="Rating">
+            <option value="">Select Rating</option>
             <option value="G">G</option>
             <option value="PG">PG</option>
             <option value="PG-13">PG-13</option>
@@ -33,6 +41,7 @@
         <!-- True/False for Edited -->
         <label asp-for="Edited">Edited:</label>
         <select asp-for="Edited">
+            <option value="">Select Option</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
         </select><br />

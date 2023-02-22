@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Delete"; // "Delete" Page
+}
+
+@model FormResponse
+
+<div class="text-center">
+    <h1 class="display-4">Are you sure you want to delete the record for @Model.Title (@Model.Year)?</h1>
+
+    <!--Delete/Cancel Buttons-->
+    <form method="post" asp-action="Delete">
+        <button type="submit" class="btn btn-primary">Delete</button>
+        <a asp-controller="Home" asp-action="MovieList" class="btn btn-primary">Cancel</a>
+
+        <!--Hidden MovieID Identifier-->
+        <input type="hidden" asp-for="MovieID"/>
+    </form>
+</div>

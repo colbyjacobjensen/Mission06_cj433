@@ -1,42 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 using Mission06_cj433.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mission06_cj433.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private MovieFormContext _formContext { get; set; }
+        private MovieFormContext _formContext { get; set; } // Add Context
 
         // Constructor
-        public HomeController(ILogger<HomeController> logger, MovieFormContext mvContext)
+        public HomeController(MovieFormContext mvContext)
         {
-            _logger = logger;
             _formContext = mvContext;
         }
 
+        // Index
         public IActionResult Index()
         {
             return View();
         }
 
+        // Podcast
         public IActionResult Podcasts()
         {
             return View();
         }
 
+        // Movie Form - Get
         [HttpGet]
         public IActionResult MovieForm()
         {
+            ViewBag.Categories = _formContext.Categories
+                .ToList();
+
             return View();
         }
 
+        // Movie Form - Post
         [HttpPost]
         public IActionResult MovieForm (FormResponse r)
         {
@@ -48,14 +49,64 @@ namespace Mission06_cj433.Controllers
             }
             else
             {
+                ViewBag.Categories = _formContext.Categories
+                .ToList();
+
                 return View();
             }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        // Movie List
+        [HttpGet]
+        public IActionResult MovieList()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var movies = _formContext.Responses
+                .Include(cat => cat.Category)
+                .OrderBy(data => data.CategoryID)
+                .ToList();
+
+            return View(movies);
+        }
+
+        // Edit - Get
+        [HttpGet]
+        public IActionResult Edit(int movieid)
+        {
+            ViewBag.Categories = _formContext.Categories
+                .ToList();
+
+            var form = _formContext.Responses.Single(data => data.MovieID == movieid);
+
+            return View("MovieForm", form);
+        }
+
+        // Edit - Post
+        [HttpPost]
+        public IActionResult Edit(FormResponse fr)
+        {
+            _formContext.Update(fr);
+            _formContext.SaveChanges();
+
+            return RedirectToAction("MovieList");
+        }
+
+        // Delete - Get
+        [HttpGet]
+        public IActionResult Delete(int movieid)
+        {
+            var form = _formContext.Responses.Single(data => data.MovieID == movieid);
+
+            return View(form);
+        }
+
+        // Delete - Post
+        [HttpPost]
+        public IActionResult Delete(FormResponse fr)
+        {
+            _formContext.Responses.Remove(fr);
+            _formContext.SaveChanges();
+
+            return RedirectToAction("MovieList");
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mission06_cj433.Models
 {
@@ -14,17 +10,29 @@ namespace Mission06_cj433.Models
             // Come back
         }
 
-        public DbSet<FormResponse> Responses { get; set; }
+        public DbSet<FormResponse> Responses { get; set; } // Form Responses Model
+        public DbSet<Category> Categories { get; set; } // Categories Model
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
-            mb.Entity<FormResponse>().HasData(
+            mb.Entity<Category>().HasData(
+                // Categories
+                new Category { CategoryID = 1, CategoryName = "Action/Adventure" },
+                new Category { CategoryID = 2, CategoryName = "Western" },
+                new Category { CategoryID = 3, CategoryName = "Romance/Drama" }, 
+                new Category { CategoryID = 4, CategoryName = "Comedy" }, 
+                new Category { CategoryID = 5, CategoryName = "Sci-Fi" }, 
+                new Category { CategoryID = 6, CategoryName = "Thriller" }, 
+                new Category { CategoryID = 7, CategoryName = "Horror" }, 
+                new Category { CategoryID = 8, CategoryName = "Animation" }
+            );
 
+            mb.Entity<FormResponse>().HasData(
                 // Seeded Database
                 new FormResponse
                 {
                     MovieID = 1,
-                    Category = "Action/Adventure",
+                    CategoryID = 1,
                     Title = "The Batman",
                     Year = 2022,
                     Director = "Matt Reaves",
@@ -37,7 +45,7 @@ namespace Mission06_cj433.Models
                 new FormResponse
                 {
                     MovieID = 2,
-                    Category = "Western",
+                    CategoryID = 2,
                     Title = "Once Upon a Time in the West",
                     Year = 1968,
                     Director = "Sergio Leone",
@@ -50,7 +58,7 @@ namespace Mission06_cj433.Models
                 new FormResponse
                 {
                     MovieID = 3,
-                    Category = "Action/Adventure",
+                    CategoryID = 1,
                     Title = "Gladiator",
                     Year = 2000,
                     Director = "Ridley Scott",
