@@ -39,18 +39,18 @@ namespace Mission06_cj433.Controllers
 
         // Movie Form - Post
         [HttpPost]
-        public IActionResult MovieForm (FormResponse r)
+        public IActionResult MovieForm (FormResponse fr)
         {
             if (ModelState.IsValid)
             {
-                _formContext.Add(r);
+                _formContext.Add(fr);
                 _formContext.SaveChanges();
-                return View("Confirmation", r);
+
+                return View("Confirmation", fr);
             }
             else
             {
-                ViewBag.Categories = _formContext.Categories
-                .ToList();
+                ViewBag.Categories = _formContext.Categories.ToList();
 
                 return View();
             }
@@ -72,22 +72,31 @@ namespace Mission06_cj433.Controllers
         [HttpGet]
         public IActionResult Edit(int movieid)
         {
-            ViewBag.Categories = _formContext.Categories
-                .ToList();
+            ViewBag.Categories = _formContext.Categories.ToList();
 
-            var form = _formContext.Responses.Single(data => data.MovieID == movieid);
+            var movie = _formContext.Responses.Single(data => data.MovieID == movieid);
 
-            return View("MovieForm", form);
+            return View("MovieForm", movie);
         }
 
         // Edit - Post
         [HttpPost]
-        public IActionResult Edit(FormResponse fr)
+        public IActionResult Edit(FormResponse fr, int movieid)
         {
-            _formContext.Update(fr);
-            _formContext.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                _formContext.Update(fr);
+                _formContext.SaveChanges();
 
-            return RedirectToAction("MovieList");
+                return RedirectToAction("MovieList", fr);
+            }
+            else
+            {
+                ViewBag.Categories = _formContext.Categories.ToList();
+                var movie = _formContext.Responses.Single(data => data.MovieID == movieid);
+
+                return View("MovieForm", movie);
+            }
         }
 
         // Delete - Get
